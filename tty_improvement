@@ -1,0 +1,21 @@
+To help with creating a fully functional TTY shell in an engagement try the following:
+
+On victim
+python -c 'import pty;pty.spawn("/bin/bash")'
+Ctrl-z
+
+On attacker
+echo $TERM # note down
+stty -a # note down rows and cols
+stty raw -echo # this may be enough
+fg
+
+On victim
+reset
+export SHELL=bash
+export TERM=xterm
+stty rows 38 columns 225
+
+
+This should help make a semi-interactive shell into a more fully functional shell, but will cause issues with the attacker terminal session if the shell drops.
+This is due to the stty raw -echo
